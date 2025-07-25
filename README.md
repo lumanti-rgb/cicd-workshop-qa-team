@@ -94,8 +94,13 @@ npm run test:report      # Run tests with reports
 
 ### Docker/Local Development
 
+> **⚠️ Windows Users Only**: Run this command first to fix line endings:
+> ```bash
+> dos2unix backend/entrypoint.sh
+> ```
+
 ```bash
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 ## Environment Variables
