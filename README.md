@@ -49,6 +49,29 @@ CICD-Workshop/
 
 ### Local Development
 
+#### Start PostgreSQL Container (Docker)
+```
+docker run -itd --rm --name cicd-postgres \
+  -e POSTGRES_DB=cicd_workshop \
+  -e POSTGRES_USER=cicd_user \
+  -e POSTGRES_PASSWORD=cicd_password \
+  -p 5432:5432 postgres:15-alpine
+```
+
+##### PostgreSQL Details
+
+```
+POSTGRES_DB=cicd_workshop
+POSTGRES_USER=cicd_user
+POSTGRES_PASSWORD=cicd_password
+POSTGRES_HOSTNAME=localhost
+```
+
+> **⚠️ Command: To Remove PostgreSQL Container**: Delete it before docker compose up --build -d :
+> ```bash
+> docker stop cicd-postgres
+> ```
+
 1. **Start Backend**:
 ```bash
 cd backend
@@ -99,8 +122,13 @@ npm run test:report      # Run tests with reports
 > dos2unix backend/entrypoint.sh
 > ```
 
+> **⚠️ Remove PostgreSQL Container**: if already exists :
+> ```bash
+> docker stop cicd-postgres
+> ```
+
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ## Environment Variables
@@ -115,12 +143,5 @@ DATABASE_URL=postgresql://cicd_user:cicd_password@localhost:5432/cicd_workshop
 ### Frontend
 ```
 REACT_APP_API_URL=http://localhost:3001/api
-```
-
-### PostgreSQL (Docker)
-```
-POSTGRES_DB=cicd_workshop
-POSTGRES_USER=cicd_user
-POSTGRES_PASSWORD=cicd_password
 ```
 

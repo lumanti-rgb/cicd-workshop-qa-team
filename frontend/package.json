@@ -16,9 +16,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false",
-    "test:unit": "react-scripts test --testPathPattern=unit --watchAll=false",
-    "test:integration": "react-scripts test --testPathPattern=integration --watchAll=false",
+    "test": "npm run test:clean && react-scripts test --coverage --watchAll=false",
+    "test:unit": "npm run test:clean && react-scripts test --testPathPattern=unit --watchAll=false",
+    "test:integration": "npm run test:clean && react-scripts test --testPathPattern=integration --watchAll=false",
+    "test:clean": "rm -rf coverage",
+    "test:watch": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,6 +46,9 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/reportWebVitals.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios)/)"
     ]
   }
 }

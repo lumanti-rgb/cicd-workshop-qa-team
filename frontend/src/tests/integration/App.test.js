@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import axios from 'axios';
 import App from '../../App';
-import { userService } from '../../services/userService';
 
-jest.mock('../../services/userService');
+// Mock axios instead of userService for better integration testing
+jest.mock('axios');
+const mockedAxios = axios;
 
 describe('App Integration Tests', () => {
   const mockUsers = [
@@ -13,39 +15,61 @@ describe('App Integration Tests', () => {
   ];
 
   beforeEach(() => {
-    userService.getUsers.mockResolvedValue(mockUsers);
-    userService.createUser.mockResolvedValue({ id: 3, name: 'New User', email: 'new@example.com' });
-    userService.deleteUser.mockResolvedValue();
-  });
-
-  afterEach(() => {
+    // Reset all mocks before each test
     jest.clearAllMocks();
+    
+    // Default successful response
+    mockedAxios.get.mockResolvedValue({ data: mockUsers });
+    mockedAxios.post.mockResolvedValue({ 
+      data: { id: 3, name: 'New User', email: 'new@example.com' } 
+    });
+    mockedAxios.delete.mockResolvedValue({ data: {} });
   });
 
   test('loads and displays users on mount', async () => {
     render(<App />);
     
+    // Check loading state first - use regex for flexibility
+    expect(screen.getByText(/loading users/i)).toBeInTheDocument();
+    
+    // Wait for users to load
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      expect(screen.getByText(/john doe/i)).toBeInTheDocument();
+      expect(screen.getByText(/jane smith/i)).toBeInTheDocument();
     });
     
-    expect(userService.getUsers).toHaveBeenCalledTimes(1);
+    // Verify API was called
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      expect.stringContaining('/api/users')
+    );
   });
 
   test('displays loading state initially', () => {
     render(<App />);
-    
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText(/loading users/i)).toBeInTheDocument();
   });
 
-  test('handles error state', async () => {
-    userService.getUsers.mockRejectedValue(new Error('API Error'));
+  test('handles API error gracefully', async () => {
+    const errorMessage = 'Failed to fetch users';
+    mockedAxios.get.mockRejectedValue(new Error(errorMessage));
     
     render(<App />);
     
     await waitFor(() => {
-      expect(screen.getByText('Failed to load users')).toBeInTheDocument();
+      // Use partial text matching to handle split text
+      expect(screen.getByText(/Failed to fetch users/i)).toBeInTheDocument();
+    });
+    
+    expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+  });
+
+  test('displays empty state when no users returned', async () => {
+    mockedAxios.get.mockResolvedValue({ data: [] });
+    
+    render(<App />);
+    
+    await waitFor(() => {
+      expect(screen.getByText(/no users found/i)).toBeInTheDocument();
     });
   });
 });
