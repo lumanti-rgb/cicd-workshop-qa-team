@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     defaults:
+      run:
       working-directory: ./frontend  # Adjust the path to your frontend directory
 
     steps:
