@@ -23,5 +23,3 @@ module.exports = defineConfig({
     }
   }
 })
-
-// This configuration file sets up Cypress for end-to-end testing of a user management application.
