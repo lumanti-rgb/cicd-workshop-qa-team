@@ -14,3 +14,4 @@ describe('Health Routes Integration Tests', () => {
     });
   });
 });
+// Compare this snippet from backend/src/server.js:
