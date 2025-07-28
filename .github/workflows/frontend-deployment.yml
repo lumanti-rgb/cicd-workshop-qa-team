@@ -1,8 +1,10 @@
 name: Frontend Deployment
 on:
   push:
+    paths:
+      - frontend/**
     branches:
-        - team2-lumanti
+      - team2-lumanti
 
 
 jobs:
