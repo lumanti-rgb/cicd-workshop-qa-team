@@ -23,4 +23,3 @@ module.exports = defineConfig({
     }
   }
 })
-// This configuration file sets up Cypress for end-to-end testing with custom environment variables, viewport settings, and a multi-reporter setup for better reporting capabilities. It also includes support for video recording and screenshots on test failures.
