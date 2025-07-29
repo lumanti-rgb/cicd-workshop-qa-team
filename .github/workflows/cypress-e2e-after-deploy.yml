@@ -1,0 +1,32 @@
+name: Cypress E2E After Frontend Deployment
+on:
+  push:
+    branches:
+      - team2-lumanti
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    needs: deploy
+    defaults:
+      run:
+        working-directory: ./e2e-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./e2e-tests
+          config-file: cypress.config.js
+        env:
+          CYPRESS_baseUrl: ${{ secrets.CYPRESS_BASE_URL }}
