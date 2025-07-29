@@ -28,4 +28,5 @@ jobs:
           working-directory: ./e2e-tests
           config-file: cypress.config.js
         env:
-          CYPRESS_baseUrl: ${{ secrets.CYPRESS_BASE_URL }}
+          CYPRESS_BASE_URL: https://t2.cicdws.bibek-mishra.com.np
+          CYPRESS_API_URL: https://t2.cicdws.bibek-mishra.com.np/api
