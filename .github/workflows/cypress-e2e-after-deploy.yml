@@ -29,4 +29,4 @@ jobs:
           config-file: cypress.config.js
         env:
           CYPRESS_BASE_URL: https://t2.cicdws.bibek-mishra.com.np
-          CYPRESS_API_URL: https://t2.cicdws.bibek-mishra.com.np/api/health
+          CYPRESS_API_URL: https://t2-api.cicdws.bibek-mishra.com.np/api/health
