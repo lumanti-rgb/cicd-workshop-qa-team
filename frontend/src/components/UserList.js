@@ -11,15 +11,16 @@ const UserList = ({ users, onUserDeleted }) => {
     }
   };
 
-  console.log(`📋 UserList: Rendering ${users.length} users`);
-  
+  console.log(`📋 UserList: Rendering ${users} users`);
+
+  const top10Users = users.slice(0, 10);
   return (
     <div>
       <h2>Users ({users.length})</h2>
       {users.length === 0 ? (
         <p>No users found</p>
       ) : (
-        users.map(user => (
+        top10Users.map(user => (
           <div key={user.id} className="user-card" data-testid={`user-${user.id}`}>
             <h3>{user.name}</h3>
             <p>Email: {user.email}</p>
