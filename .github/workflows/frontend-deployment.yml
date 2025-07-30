@@ -68,9 +68,7 @@ jobs:
       run: npm install
 
     - name: Run Cypress E2E tests
-      uses: cypress-io/github-action@v6
-      with:
-        config-file: cypress.config.js
+      run: npm run cypress:run
       env:
         CYPRESS_BASE_URL: https://t2.cicdws.bibek-mishra.com.np
         CYPRESS_API_URL: https://t2-api.cicdws.bibek-mishra.com.np/api
