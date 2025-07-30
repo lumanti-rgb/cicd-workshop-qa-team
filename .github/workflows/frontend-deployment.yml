@@ -3,9 +3,10 @@ on:
   push:
     paths:
       - frontend/**
+      - e2e-tests/**
+      - .github/workflows/frontend-deployment.yml
     branches:
       - team2-lumanti
-
 
 jobs:
   deploy:
@@ -47,3 +48,29 @@ jobs:
       env:
         DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} # Store your distribution ID as a secret
         PATHS: "/*" # Invalidate all paths, or specify specific paths like "/index.html /css/*"
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: deploy
+    defaults:
+      run:
+        working-directory: ./e2e-tests  # Adjust the path to your e2e tests directory
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Cypress E2E tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: cypress.config.js
+      env:
+        CYPRESS_BASE_URL: https://t2.cicdws.bibek-mishra.com.np
+        CYPRESS_API_URL: https://t2-api.cicdws.bibek-mishra.com.np/api
