@@ -65,4 +65,3 @@ const UserForm = ({ onUserCreated }) => {
 };
 
 export default UserForm;
-// This code is part of a React application that manages users.
