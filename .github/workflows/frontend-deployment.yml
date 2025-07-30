@@ -29,7 +29,7 @@ jobs:
     - name: Run Build
       run: npm run build
       env:
-        REACT_APP_API_URL: https://t2.cicdws.bibek-mishra.com.np/api
+        REACT_APP_API_URL: https://t2-api.cicdws.bibek-mishra.com.np/api
       
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
