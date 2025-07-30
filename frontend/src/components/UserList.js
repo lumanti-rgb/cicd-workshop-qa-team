@@ -40,3 +40,4 @@ const UserList = ({ users, onUserDeleted }) => {
 };
 
 export default UserList;
+// CSS styles for the user card
