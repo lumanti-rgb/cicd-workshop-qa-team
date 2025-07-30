@@ -103,3 +103,4 @@ describe('UserService Unit Tests', () => {
     });
   });
 });
+// This code is a unit test suite for the userService module, which interacts with a PostgreSQL database.
