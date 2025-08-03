@@ -54,7 +54,7 @@ jobs:
     needs: deploy
     defaults:
       run:
-        working-directory: ./e2e-tests  # Adjust the path to your e2e tests directory
+        working-directory: ./e2e-tests  # Adjust the path to your e2e tests directorys
 
     steps:
     - uses: actions/checkout@v4
