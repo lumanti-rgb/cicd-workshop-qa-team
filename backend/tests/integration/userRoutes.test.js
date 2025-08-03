@@ -125,4 +125,3 @@ describe('User Routes Integration Tests', () => {
     });
   });
 });
-// This code is a set of integration tests for user routes in a Node.js application using Jest and Supertest.
