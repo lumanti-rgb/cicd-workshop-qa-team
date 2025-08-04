@@ -5,26 +5,31 @@ phases:
   install:
     runtime-versions:
       nodejs: 20
+    on-failure: ABORT
 
 
   pre_build:
     commands:
-      - echo "Installing dependencies..."
+      - echo "Setting up environment variables..."
+      - |
+        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" = "refs/heads/dev" ]; then
+          echo "dev"
+        else
+          echo "$(basename $CODEBUILD_WEBHOOK_HEAD_REF)"
+        fi
+      - echo Installing dependencies...
       - cd frontend
       - npm install
+    on-failure: ABORT
 
 
   build:
     commands:
-      - echo "Building Frontend application"
-      - echo "REACT_APP_API_URL=${REACT_APP_API_URL}" > .env
-      - npm run build
+      - npm run test
+    on-failure: ABORT
 
 
-  post_build:
-    commands:
-      - echo "Deploying to S3 bucket ${S3_BUCKET_NAME}"
-      - aws s3 sync build s3://${S3_BUCKET_NAME} --delete
-      - echo "Invalidating CloudFront distribution ${CLOUDFRONT_DISTRIBUTION_ID}"
-      - aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths "/*"
-      - echo "🎉 Frontend deployed successfully to S3 + CloudFront!"
+artifacts:
+  files:
+    - frontend/coverage/**/*
+  name: backend-artifacts
